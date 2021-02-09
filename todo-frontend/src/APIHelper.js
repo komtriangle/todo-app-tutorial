@@ -3,7 +3,7 @@ import axios from "axios";
 const API_URL="http://localhost:3000/todos/"
 async function createTodo(task) {
   const { data: newTodo } = await axios.post(API_URL, {
-    task
+    task: task
   });
   return newTodo;
 }
@@ -20,6 +20,7 @@ async function updateTodo(id, payload) {
 
 async function getAllTodos() {
   const { data: todos } = await axios.get(API_URL);
+  console.log(todos)
   return todos;
 }
 

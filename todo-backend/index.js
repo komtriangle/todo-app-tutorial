@@ -49,6 +49,44 @@ app.delete("/todos/:id", async (req, res, next) => {
   }
 });
 
+
+app.get("/questions", async (req, res, next) => {
+  try {
+    const todos = await db.QA.find({Category:req.query.Cat});
+    return success(res, todos);
+  } catch (err) {
+    next({ status: 400, message: "failed to get todos" });
+  }
+});
+
+app.post("/questions", async (req, res, next) => {
+  try {
+    const todo = await db.QA.create(req.body);
+    return success(res, todo);
+  } catch (err) {
+    next({ status: 400, message: "failed to create todo" });
+  }
+});
+
+app.put("/questions/:id", async (req, res, next) => {
+  try {
+    const todo = await db.QA.findByIdAndUpdate(req.params.id, req.body, {
+      new: true
+    });
+    return success(res, todo);
+  } catch (err) {
+    next({ status: 400, message: "failed to update todo" });
+  }
+});
+app.delete("/questions/:id", async (req, res, next) => {
+  try {
+    await db.QA.findByIdAndRemove(req.params.id);
+    return success(res, "todo deleted!");
+  } catch (err) {
+    next({ status: 400, message: "failed to delete todo" });
+  }
+});
+
 app.use((err, req, res, next) => {
   return res.status(err.status || 400).json({
     status: err.status || 400,
